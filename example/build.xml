@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<project name="BITMAP_FONT" default="build" basedir=".">
+	
+	<property environment="env"/>
+	<property name="wtk.home" value="${env.WTK_HOME}"/>
+	<path id="classpath">
+	    <pathelement path="${wtk.home}/lib/midpapi20.jar"/>
+	    <pathelement path="${wtk.home}/lib/cldcapi10.jar"/>
+	</path>
+
+	<taskdef resource="antenna.properties"/>
+
+    <target name="build">
+        <!-- Create a JAD file. -->
+        <wtkjad jadfile="bmfonttest.jad"
+                jarfile="bmfonttest.jar"
+                name="BitmapFont Example"
+                vendor="Sergey Tkachev"
+                version="1.0.0">
+
+            <midlet name="BitmapFont Example"
+            	class="net.sergetk.mobile.example.BitmapFontTestMidlet"/>
+        </wtkjad>
+        
+        <delete dir="classes"/>
+        <mkdir dir="classes"/>
+
+        <wtkbuild srcdir="src;../src;res"
+                  destdir="classes"
+                  preverify="false"/>
+
+    	<copy todir="classes">
+			<fileset dir="res"/>
+		</copy>
+
+    	<wtkpackage jarfile="bmfonttest.jar"
+                    jadfile="bmfonttest.jad"
+                    obfuscate="true"
+                    preverify="true">
+            <fileset dir="classes"/>
+        </wtkpackage>
+    </target>
+	
+	<target name="clean">
+		<delete dir="classes"/>
+		<delete file="bmfonttest.jad"/>
+		<delete file="bmfonttest.jar"/>
+	</target>
+</project>
